@@ -9,6 +9,5 @@ services:
       - .:/noxious
     ports:
       - "3000:3000"
-    depends_ons:
+    depends_on:
       - db
-      
