@@ -1,0 +1,62 @@
+<%= form_with(model: facility, local: true) do |form| %>
+  <% if facility.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(facility.errors.count, "error") %> prohibited this facility from being saved:</h2>
+
+      <ul>
+      <% facility.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :facility_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :address %>
+    <%= form.text_field :address, id: :facility_address %>
+  </div>
+
+  <div class="field">
+    <%= form.label :city %>
+    <%= form.text_field :city, id: :facility_city %>
+  </div>
+
+  <div class="field">
+    <%= form.label :country %>
+    <%= form.text_field :country, id: :facility_country %>
+  </div>
+
+  <div class="field">
+    <%= form.label :state %>
+    <%= form.text_field :state, id: :facility_state %>
+  </div>
+
+  <div class="field">
+    <%= form.label :zip %>
+    <%= form.number_field :zip, id: :facility_zip %>
+  </div>
+
+  <div class="field">
+    <%= form.label :latitude %>
+    <%= form.text_field :latitude, id: :facility_latitude %>
+  </div>
+
+  <div class="field">
+    <%= form.label :longitude %>
+    <%= form.text_field :longitude, id: :facility_longitude %>
+  </div>
+
+  <div class="field">
+    <%= form.label :federally_owned %>
+    <%= form.check_box :federally_owned, id: :facility_federally_owned %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

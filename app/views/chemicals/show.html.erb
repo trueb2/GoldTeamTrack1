@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @chemical.name %>
+</p>
+
+<p>
+  <strong>Compound:</strong>
+  <%= @chemical.compound_id %>
+</p>
+
+<p>
+  <strong>Clear air act chemical:</strong>
+  <%= @chemical.clear_air_act_chemical %>
+</p>
+
+<p>
+  <strong>Is metal:</strong>
+  <%= @chemical.is_metal %>
+</p>
+
+<p>
+  <strong>Metal category:</strong>
+  <%= @chemical.metal_category %>
+</p>
+
+<%= link_to 'Edit', edit_chemical_path(@chemical) %> |
+<%= link_to 'Back', chemicals_path %>

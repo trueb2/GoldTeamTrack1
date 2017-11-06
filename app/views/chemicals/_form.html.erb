@@ -1,0 +1,42 @@
+<%= form_with(model: chemical, local: true) do |form| %>
+  <% if chemical.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(chemical.errors.count, "error") %> prohibited this chemical from being saved:</h2>
+
+      <ul>
+      <% chemical.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :chemical_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :compound_id %>
+    <%= form.number_field :compound_id, id: :chemical_compound_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :clear_air_act_chemical %>
+    <%= form.check_box :clear_air_act_chemical, id: :chemical_clear_air_act_chemical %>
+  </div>
+
+  <div class="field">
+    <%= form.label :is_metal %>
+    <%= form.check_box :is_metal, id: :chemical_is_metal %>
+  </div>
+
+  <div class="field">
+    <%= form.label :metal_category %>
+    <%= form.text_field :metal_category, id: :chemical_metal_category %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
