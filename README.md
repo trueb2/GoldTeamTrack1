@@ -24,7 +24,7 @@ The following are some useful commands that will be used in dockerized developme
 * `docker-compose run web rails generate ...` - Run Rails generate commands like migrations
 
 To run a MySQL client shell:
-* `docker-compose run db mysql -uroot -hdb -p`
+* `docker-compose run db mysql -uroot -hdb -p` - The root user password is currently `root`
 
 ## Importing Toxic Data
 
