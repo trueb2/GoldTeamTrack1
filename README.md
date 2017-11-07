@@ -18,7 +18,7 @@ Extra MacOS setup if you don't have Docker.app:
 The following are some useful commands that will be used in dockerized development.
 * `docker-compose build`  - Builds the image described in Dockerfile for the first time
 * `docker-compose up` - Composes the web and mysql image, starting the app in development mode at http://localhost:3000
-* `docker-compose down` - Gracefully kills app from different terminal window (in same directory)
+* `docker-compose down` - Gracefully kills app from different terminal window (in same directory), including stopping and removing all containers started via `docker-compose up` and `docker-compose run ...`
 * `docker-compose run web rails db:create` - Creates the development database
 * `docker-compose run web rails db:migrate` - Runs the migrations of the RoR app in the MySQL database
 * `docker-compose run web rails generate ...` - Run Rails generate commands like migrations
