@@ -9,7 +9,7 @@ From the provided vm at http://fa17-cs411-42.cs.illinois.edu, which runs CoreOS,
 To support development on multiple operating systems, there is a Dockerfile and a docker-compose.yml configuration to support  dockerized development.
 
 The following are some useful commands that will be used in dockerized development.
-* `docker build`  - Builds the image described in Dockerfile for the first time
+* `docker-compose build`  - Builds the image described in Dockerfile for the first time
 * `docker-compose up` - Composes the web and mysql image, starting the app in development mode at http://localhost:3000
 * `docker-compose down` - Gracefully kills app from different terminal window (in same directory)
 * `docker-compose run web rails db:create` - Creates the development database
