@@ -2,6 +2,8 @@
 
 Noxious is a web application that allows users to explore EPA's Toxic Release dataset that is available through Kaggle at https://www.kaggle.com/epa/toxic-release-inventory
 
+View our Wiki page here: https://wiki.illinois.edu/wiki/pages/viewpage.action?spaceKey=~jcao7&title=Gold+Team
+
 ## Server Setup
 
 From the provided vm at http://fa17-cs411-42.cs.illinois.edu, which runs CoreOS, we are serving our application using Nginx and Puma to serve a Ruby on Rails for production.
