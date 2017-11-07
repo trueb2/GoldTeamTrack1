@@ -8,6 +8,11 @@ From the provided vm at http://fa17-cs411-42.cs.illinois.edu, which runs CoreOS,
 
 To support development on multiple operating systems, there is a Dockerfile and a docker-compose.yml configuration to support  dockerized development.
 
+Extra MacOS setup if you don't have Docker.app:
+* `docker-machine start # Start virtual machine for docker`
+* `docker-machine env  # It's helps to get environment variables`
+* `eval "$(docker-machine env default)" # Set environment variables`
+
 The following are some useful commands that will be used in dockerized development.
 * `docker build`  - Builds the image described in Dockerfile for the first time
 * `docker-compose up` - Composes the web and mysql image, starting the app in development mode at http://localhost:3000
