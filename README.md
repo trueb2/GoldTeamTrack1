@@ -16,6 +16,9 @@ The following are some useful commands that will be used in dockerized developme
 * `docker-compose run web rails db:migrate` - Runs the migrations of the RoR app in the MySQL database
 * `docker-compose run web rails generate ...` - Run Rails generate commands like migrations
 
+To run a MySQL client shell:
+* `docker-compose run db mysql -uroot -hdb -p`
+
 ## Importing Toxic Data
 
 We don't have this figured out yet. We will need a script or something that will read from the csv in chunks and insert them into the dockerized/production MySQL database properly.
