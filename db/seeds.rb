@@ -1,7 +1,11 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+# Seed using the basic_data_files.csv from Kaggle
+
+count = 0
+open('basic_data_files.csv') do |csv|
+  csv.each_line do |row|
+    record = row.split(',')
+    Company.find_or_create_by!(name: record[107])
+    count += 1
+    puts("Processing row #{count}") if count % 100 == 0
+  end
+end
