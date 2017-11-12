@@ -40,6 +40,8 @@ ActiveRecord::Schema.define(version: 20171112034301) do
     t.boolean "federally_owned"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_facilities_on_company_id"
   end
 
   create_table "releases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -57,4 +59,5 @@ ActiveRecord::Schema.define(version: 20171112034301) do
 
   add_foreign_key "releases", "chemicals"
   add_foreign_key "releases", "facilities"
+  add_foreign_key "facilities", "companies"
 end
