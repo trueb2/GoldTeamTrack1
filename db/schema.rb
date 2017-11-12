@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171106230527) do
+ActiveRecord::Schema.define(version: 20171112034301) do
 
   create_table "chemicals", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -49,6 +49,12 @@ ActiveRecord::Schema.define(version: 20171106230527) do
     t.string "units"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "chemical_id"
+    t.bigint "facility_id"
+    t.index ["chemical_id"], name: "index_releases_on_chemical_id"
+    t.index ["facility_id"], name: "index_releases_on_facility_id"
   end
 
+  add_foreign_key "releases", "chemicals"
+  add_foreign_key "releases", "facilities"
 end

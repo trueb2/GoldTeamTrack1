@@ -16,6 +16,7 @@ The following are some useful commands that will be used in dockerized developme
 * `docker-compose down` - Gracefully kills app from different terminal window (in same directory)
 * `docker-compose run web rails db:create` - Creates the development database
 * `docker-compose run web rails db:migrate` - Runs the migrations of the RoR app in the MySQL database
+* `docker-compose run web rails db:seed` - Parse CSV file into database
 * `docker-compose run web rails generate ...` - Run Rails generate commands like migrations
 
 To run a MySQL client shell:
