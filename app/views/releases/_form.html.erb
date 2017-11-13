@@ -12,13 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :date %>
-    <%= form.datetime_select :date, id: :release_date %>
-  </div>
-
-  <div class="field">
-    <%= form.label :method %>
-    <%= form.text_field :method, id: :release_method %>
+    <%= form.label :year %>
+    <%= form.number_field :year, id: :release_year %>
   </div>
 
   <div class="field">

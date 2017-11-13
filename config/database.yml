@@ -49,6 +49,7 @@ test:
 #
 production:
   <<: *default
+  host: localhost
   database: noxious_production
-  username: noxious
+  username: root
   password: <%= ENV['NOXIOUS_DATABASE_PASSWORD'] %>

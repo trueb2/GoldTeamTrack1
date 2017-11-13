@@ -4,7 +4,8 @@ class FacilitiesController < ApplicationController
   # GET /facilities
   # GET /facilities.json
   def index
-     if params[:like]
+    @count = Facility.count
+     if params[:name_like]
        @facilities = Facility.where("name LIKE ?", "%#{params[:name_like]}%")
      else
        @facilities = Facility.all

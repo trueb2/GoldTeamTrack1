@@ -4,6 +4,7 @@ class ChemicalsController < ApplicationController
   # GET /chemicals
   # GET /chemicals.json
   def index
+    @count = Chemical.count
     @chemicals = Chemical.all
   end
 

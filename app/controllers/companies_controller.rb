@@ -4,6 +4,7 @@ class CompaniesController < ApplicationController
   # GET /companies
   # GET /companies.json
   def index
+    @count = Company.count
     @companies = Company.all
   end
 
