@@ -4,32 +4,59 @@ Noxious is a web application that allows users to explore EPA's Toxic Release da
 
 View our Wiki page here: https://wiki.illinois.edu/wiki/pages/viewpage.action?spaceKey=~jcao7&title=Gold+Team
 
-## Server Setup
+## Dev setup
+Only once, download the Docker app, and run the following:
+```bash
+git clone https://github.com/trueb2/GoldTeamTrack1.git
+cd GoldTeamTrack1
+docker-compose build
+```
+
+Visit https://www.kaggle.com/epa/toxic-release-inventory and download the dataset, putting basic_data_files.csv in GoldTeamTrack1/. To create and fill the database, run the following:
+```bash
+docker-compose run web rails db:create  # Creates the tables in MySQL if they don't exist
+docker-compose run web rails db:migrate # Applies migrations (Rails-specific way of
+                                        # editing table structure)
+docker-compose run web rails db:seed    # Parses CSV file into database (progress updates
+                                        # periodically, ctrl-C when you have enough records)
+```
+
+To run the application:
+```bash
+# May need to follow database creation steps above if it can't find the database
+docker-compose up
+# Open localhost:3000 in a browser
+```
+
+To stop the application:
+```bash
+docker-compose down
+```
+
+Edit files directly in GoldTeamTrack1 (on your local machine). Docker images share files with your local machine, so don't worry about that.
+
+## Other helpful commands
+
+* `docker-compose run web rails <rails command> # Runs rails commands in Docker image`
+* `docker-compose run db mysql -uroot -hdb -p   # Launch a MySQL client shell, to inspect
+                                                # data (root password is root)`
+
+## Project details
 
 From the provided vm at http://fa17-cs411-42.cs.illinois.edu, which runs CoreOS, we are serving our application using Nginx and Puma to serve a Ruby on Rails for production.
 
 To support development on multiple operating systems, there is a Dockerfile and a docker-compose.yml configuration to support  dockerized development.
 
+## Deploying on production server
+
+Read notes in /home/shared/README on production server (http://fa17-cs411-42.cs.illinois.edu).
+
+## Other notes
+
 Extra MacOS setup if you don't have Docker.app:
 * `docker-machine start # Start virtual machine for docker`
 * `docker-machine env  # It's helps to get environment variables`
 * `eval "$(docker-machine env default)" # Set environment variables`
-
-The following are some useful commands that will be used in dockerized development.
-* `docker-compose build`  - Builds the image described in Dockerfile for the first time
-* `docker-compose up` - Composes the web and mysql image, starting the app in development mode at http://localhost:3000
-* `docker-compose down` - Gracefully kills app from different terminal window (in same directory), including stopping and removing all containers started via `docker-compose up` and `docker-compose run ...`
-* `docker-compose run web rails db:create` - Creates the development database
-* `docker-compose run web rails db:migrate` - Runs the migrations of the RoR app in the MySQL database
-* `docker-compose run web rails db:seed` - Parse CSV file into database
-* `docker-compose run web rails generate ...` - Run Rails generate commands like migrations
-
-To run a MySQL client shell:
-* `docker-compose run db mysql -uroot -hdb -p` - The root user password is currently `root`
-
-### Deploying on production server
-
-Read notes in /home/shared/README
 
 ### Versions
 
