@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(version: 20171112034301) do
 
   create_table "chemicals", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
-    t.integer "compound_id"
+    t.bigint "compound_id"
     t.boolean "clear_air_act_chemical"
     t.boolean "is_metal"
     t.string "metal_category"
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 20171112034301) do
     t.index ["facility_id"], name: "index_releases_on_facility_id"
   end
 
+  add_foreign_key "facilities", "companies"
   add_foreign_key "releases", "chemicals"
   add_foreign_key "releases", "facilities"
-  add_foreign_key "facilities", "companies"
 end

@@ -4,7 +4,11 @@ class FacilitiesController < ApplicationController
   # GET /facilities
   # GET /facilities.json
   def index
-    @facilities = Facility.all
+     if params[:like]
+       @facilities = Facility.where("name LIKE ?", "%#{params[:name_like]}%")
+     else
+       @facilities = Facility.all
+     end
   end
 
   # GET /facilities/1
