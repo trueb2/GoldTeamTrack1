@@ -27,9 +27,9 @@ The following are some useful commands that will be used in dockerized developme
 To run a MySQL client shell:
 * `docker-compose run db mysql -uroot -hdb -p` - The root user password is currently `root`
 
-## Importing Toxic Data
+### Deploying on production server
 
-We don't have this figured out yet. We will need a script or something that will read from the csv in chunks and insert them into the dockerized/production MySQL database properly.
+Read notes in /home/shared/README
 
 ### Versions
 
