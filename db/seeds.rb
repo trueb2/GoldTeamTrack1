@@ -5,7 +5,7 @@ def cast_bool(i)
     begin
         return false if Integer(i) == 0
     rescue
-       return true 
+       return true
     end
     true
 end
@@ -19,7 +19,7 @@ open('basic_data_files.csv') do |csv|
 
     if count == 0
         r.each_with_index do |field, idx|
-           lookup[field] = idx 
+           lookup[field] = idx
         end
         count += 1
         next
@@ -34,7 +34,7 @@ open('basic_data_files.csv') do |csv|
 
     begin
     chemical = Chemical.find_or_create_by!(name: r[lookup["CHEMICAL"]])
-    chemical.update({ 
+    chemical.update({
         compound_id: r[lookup["CAS_#/COMPOUND_ID"]],
         is_metal: cast_bool(r[lookup["METAL"]]),
         metal_category: r[lookup["METAL_CATEGORY"]],
@@ -54,10 +54,11 @@ open('basic_data_files.csv') do |csv|
         federally_owned: cast_bool(r[lookup["FEDERAL_FACILITY"]]),
     })
 
-    Release.create({
+    Release.create!({
         chemical: chemical,
         facility: facility,
-        date: r[lookup["YEAR"]],
+        quantity: r[lookup["TOTAL_RELEASES"]],
+        year: r[lookup["YEAR"]],
         units: r[lookup["UNIT_OF_MEASURE"]],
     })
 

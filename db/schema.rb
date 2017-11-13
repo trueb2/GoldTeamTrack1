@@ -45,9 +45,8 @@ ActiveRecord::Schema.define(version: 20171112034301) do
   end
 
   create_table "releases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.datetime "date"
-    t.string "method"
-    t.integer "quantity"
+    t.integer "year"
+    t.float "quantity", limit: 24
     t.string "units"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

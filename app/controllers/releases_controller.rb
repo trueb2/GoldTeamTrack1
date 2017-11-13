@@ -4,6 +4,7 @@ class ReleasesController < ApplicationController
   # GET /releases
   # GET /releases.json
   def index
+    @count = Release.count
     @releases = Release.all
   end
 
