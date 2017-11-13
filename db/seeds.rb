@@ -27,7 +27,9 @@ open('basic_data_files.csv') do |csv|
 
     company_name = r[lookup["PARENT_COMPANY_NAME"]]
     if !company_name.empty?
-        Company.find_or_create_by!(name: company_name)
+        company = Company.find_or_create_by!(name: company_name)
+    else
+	next
     end
 
     begin
@@ -39,8 +41,9 @@ open('basic_data_files.csv') do |csv|
         clear_air_act_chemical: cast_bool(r[lookup["CLEAR_AIR_ACT_CHEMICAL"]]),
     })
 
-    facility = Facility.find_or_create_by!(name: r[lookup["FACILITY_NAME"]])
+    facility = Facility.find_or_create_by!(name: r[lookup["FACILITY_NAME"]], company: company)
     facility.update({
+        company: company,
         address: r[lookup["STREET_ADDRESS"]],
         city: r[lookup["CITY"]],
         country: "USA",
