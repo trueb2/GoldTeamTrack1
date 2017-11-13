@@ -36,10 +36,10 @@ docker-compose down
 Edit files directly in GoldTeamTrack1 (on your local machine). Docker images share files with your local machine, so don't worry about that.
 
 ## Other helpful commands
-
-* `docker-compose run web rails <rails command> # Runs rails commands in Docker image`
-* `docker-compose run db mysql -uroot -hdb -p   # Launch a MySQL client shell, to inspect
-                                                # data (root password is root)`
+Runs rails commands in Docker image:
+* `docker-compose run web rails <rails command>`
+Launch a MySQL client shell, to inspect data (root password is root):
+* `docker-compose run db mysql -uroot -hdb -p`
 
 ## Project details
 
