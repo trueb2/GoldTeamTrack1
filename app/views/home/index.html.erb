@@ -3,6 +3,26 @@
 <h3>Noxious currently supports basic CRUD operations.</h3>
 <h3>Please visit one of the routes listed below to view the application data</h3>
 
+
+<div id="map" style="width: 100%;
+        height: 400px"></div>
+<script>
+  function initMap() {
+    var uluru = {lat: -25.363, lng: 131.044};
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 4,
+      center: uluru
+    });
+    var marker = new google.maps.Marker({
+      position: uluru,
+      map: map
+    });
+  }
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADv2Y8CtCt8vg9aFPz1BowUxXLYx6YFTo&callback=initMap">
+</script>
+
 <ul>
   <li>
     <%= link_to "Companies", companies_path =%>
@@ -16,4 +36,5 @@
   <li>
     <%= link_to "Releases", releases_path =%>
   </li>
+
 </ul>
