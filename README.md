@@ -47,6 +47,20 @@ From the provided vm at http://fa17-cs411-42.cs.illinois.edu, which runs CoreOS,
 
 To support development on multiple operating systems, there is a Dockerfile and a docker-compose.yml configuration to support  dockerized development.
 
+## Javascript event list API
+
+To get a list of event JSON objects, call getEvents() in JavaScript.
+
+For example:
+
+```
+getEvents(function(eventList) {
+	for (i = 0; i < eventList.length; i++) {
+		console.log(eventList[i].facility.name);
+	}
+});
+```
+
 ## Deploying on production server
 
 Read notes in /home/shared/README on production server (http://fa17-cs411-42.cs.illinois.edu).

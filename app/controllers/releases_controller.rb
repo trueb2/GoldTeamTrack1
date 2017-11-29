@@ -22,6 +22,17 @@ class ReleasesController < ApplicationController
   def edit
   end
 
+  def events
+    puts params
+    facility_fields = Hash(params.fetch("facilities", {}).permit!).map do | key, val |
+      { "facilities.#{key}" => val }
+    end.reduce(:merge) || {}
+    release_fields = (Hash(params.fetch("releases", {}).permit!)).map do | key, val |
+      { "releases.#{key}" => val }
+    end.reduce(:merge) || {}
+    @releases = Release.joins(:facility).where(facility_fields.merge(release_fields)).all.first(100)
+  end
+
   # POST /releases
   # POST /releases.json
   def create

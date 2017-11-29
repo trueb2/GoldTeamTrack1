@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  
+  get '/events', to: 'releases#events'
+
   resources :chemicals
   resources :releases
   resources :companies
