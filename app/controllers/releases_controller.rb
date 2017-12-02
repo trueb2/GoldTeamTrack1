@@ -24,13 +24,20 @@ class ReleasesController < ApplicationController
 
   def events
     puts params
+    west = params[:w] || -130
+    east = params[:e] || -65
+    south = params[:s] || 22
+    north = params[:n] || 50
     facility_fields = Hash(params.fetch("facilities", {}).permit!).map do | key, val |
       { "facilities.#{key}" => val }
     end.reduce(:merge) || {}
     release_fields = (Hash(params.fetch("releases", {}).permit!)).map do | key, val |
       { "releases.#{key}" => val }
     end.reduce(:merge) || {}
-    @releases = Release.joins(:facility).where(facility_fields.merge(release_fields)).all.first(100)
+    release_fields = (Hash(params.fetch("chemicals", {}).permit!)).map do | key, val |
+      { "chemicals.#{key}" => (val == "true" ? true : (val == "false" ? false : val) ) }
+    end.reduce(:merge) || {}
+    @releases = Release.joins(:facility).joins(:chemical).where("facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}").where(facility_fields.merge(release_fields)).all.sample(100)
   end
 
   # POST /releases
