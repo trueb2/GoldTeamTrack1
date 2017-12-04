@@ -13,3 +13,76 @@
  *= require_tree .
  *= require_self
  */
+ @import url("https://fonts.googleapis.com/css?family=Lato:300,400,700");
+ /*!
+  * bootswatch v3.3.7
+  * Homepage: http://bootswatch.com
+  * Copyright 2012-2016 Thomas Park
+  * Licensed under MIT
+  * Based on Bootstrap
+ */
+ /*!
+  * Bootstrap v3.3.7 (http://getbootstrap.com)
+  * Copyright 2011-2016 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  */
+ /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+
+
+/* Import a different bootstrap theme, free off the internet. */
+ @import 'superhero.css';
+
+#logo h1 {
+    font-size: 80pt;
+}
+
+#logo-title {
+    text-align: left;
+    float: left:
+}
+
+#logo-subtitle {
+    float: left;
+}
+
+.align-bottom {
+    display: block;
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    #logo-title {
+        text-align: right;
+
+    }
+
+    #logo-subtitle {
+        text-align: left;
+    }
+
+    .align-bottom {
+        display: flex;
+        align-items: baseline;
+    }
+}
+
+@media (max-width: 1200px) {
+    #logo .align-bottom {
+        display: block;
+    }
+}
+
+.align-bottom {
+    display: flex;
+    align-items: baseline;
+}
+
+
+.dot {
+    color: magenta;
+    font-size: 110%;
+}
+
+.container .jumbotron, .container-fluid .jumbotron {
+    border-radius: 10px;
+}

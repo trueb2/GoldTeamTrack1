@@ -1,18 +1,35 @@
-<div class="jumbotron">
-    <h1>Noxious</h1>
 
-    <br>
 
-    <form>
-      Year: <input type="text" id="release_year" value="2016" /><br>
-      Clear Air Act Chemicals: <input type="checkbox" id="chemical_caa" checked="true" /><br>
-    </form>
-    <br>
-    <button class="btn btn-lg btn-primary" onclick="dropPins()" style="margin-bottom: 20px;">Search</button>
 
-    <br>
+<!-- Logo and subtitle text -->
+<div class="container-fluid" id="logo">
+    <div class="row align-bottom">
+        <h1 class="col-lg-6" id="logo-title">Nox<span class="dot">.</span>io<span class="dot">.</span>us</h1>
+        <div class="col-lg-6" id="logo-subtitle">
+            <p class="lead">
+                Exploring EPA data at a glance
+            </p>
+        </div>
+    </div>
+</div>
 
-    <div id="map" style="width: 100%; height: 400px"></div>
+
+<div class="container-fluid">
+    <div class="jumbotron">
+
+        <br>
+
+        <form>
+          Year: <input type="text" id="release_year" value="2016" /><br>
+          Clear Air Act Chemicals: <input type="checkbox" id="chemical_caa" checked="true" /><br>
+        </form>
+        <br>
+        <button class="btn btn-lg btn-primary" onclick="dropPins()" style="margin-bottom: 20px;">Search</button>
+
+        <br>
+
+        <div id="map" style="width: 100%; height: 400px"></div>
+    </div>
 </div>
 <script>
   window.pins = [];
