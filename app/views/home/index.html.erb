@@ -28,9 +28,10 @@
 
         <br>
 
-        <div id="map" style="width: 100%; height: 400px"></div>
+        <div id="map" style="width: 100%; height: 800px"></div>
     </div>
 </div>
+
 <script>
   window.pins = [];
 
@@ -93,10 +94,11 @@
   }
 
   function initMap() {
-    var center = { lat: 40, lng: -96 };
+    var mapCenter = new google.maps.LatLng(40,-89.5);
+    defaultZoom = 7;
     window.map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 4,
-      center: center
+      zoom: defaultZoom,
+      center: mapCenter
     });
 
     google.maps.event.addListener(map, "bounds_changed", dropPins);
