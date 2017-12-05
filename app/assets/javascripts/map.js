@@ -69,3 +69,11 @@
     google.maps.event.addListener(map, "bounds_changed", dropPins);
     dropPins();
   }
+
+$(document).ready(function() {
+    var eventFieldsForm = document.getElementById("event_fields");
+    eventFieldsForm.onsubmit = function(e) {
+      e.preventDefault();
+      dropPins();
+  };
+});
