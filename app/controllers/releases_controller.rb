@@ -37,7 +37,7 @@ class ReleasesController < ApplicationController
     chemical_fields = (Hash(params.fetch("chemicals", {}).permit!)).map do | key, val |
       { "chemicals.#{key}" => (val == "true" ? true : (val == "false" ? false : val) ) }
     end.reduce(:merge) || {}
-    @releases = Release.joins(:facility).joins(:chemical).where("facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}").where(facility_fields.merge(release_fields).merge(chemical_fields)).all.sample(100)
+    @releases = Release.includes(:facility, :chemical).joins(:facility, :chemical).where("facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}").where(facility_fields.merge(release_fields).merge(chemical_fields)).limit(100)
   end
 
 	def new_event
