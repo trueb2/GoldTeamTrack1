@@ -27,7 +27,7 @@
         <button class="btn btn-lg btn-primary" onclick="dropPins()" style="margin-bottom: 20px;">Search</button>
 
         <br>
-	
+
         <div style="color: #000;">
             <div id="map" style="width: 100%; height: 800px"></div>
         </div>
@@ -35,3 +35,7 @@
 </div>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADv2Y8CtCt8vg9aFPz1BowUxXLYx6YFTo&callback=initMap"></script>
+
+<div class="container-fluid">
+  <%= render partial: "zoom_tree" %>
+</div>

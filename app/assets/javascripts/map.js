@@ -46,6 +46,11 @@
       },
     }
     getEvents(fields, function(list) {
+      // Load the graph below the map if it has been initialized
+      if(typeof loadRadialTree !==  'undefined') {
+        loadRadialTree(list);
+      }
+
       for (i = 0; i < list.length; i++) {
         var facility = list[i].facility;
         var marker = new google.maps.Marker({
