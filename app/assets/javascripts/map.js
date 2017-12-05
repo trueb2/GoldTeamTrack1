@@ -47,8 +47,8 @@
     }
     getEvents(fields, function(list) {
       // Load the graph below the map if it has been initialized
-      if(typeof loadRadialTree !==  'undefined') {
-        loadRadialTree(list);
+      if(typeof populateTidyTree !==  'undefined') {
+        populateTidyTree(list);
       }
 
       for (i = 0; i < list.length; i++) {

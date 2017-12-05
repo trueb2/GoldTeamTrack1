@@ -51,7 +51,54 @@
 <div id="tree-container"></div>
 
 <script>
-treeJSON = d3.json("flare.json", function(error, treeData) {
+
+function idxByName(name, arr) {
+  for(var i = 0; i < arr.length; i++) {
+    if(arr[i].name == name) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+function processAsJSON(data) {
+  json = {name: "Company", children: []};
+  for(var i = 0; i < data.length; i++) {
+    var release = data[i];
+
+    if(typeof release.year === 'undefined' || typeof release.facility.name === 'undefined') {
+      console.log(release);
+    }
+
+    // Create the facility if it does not exist
+    if(idxByName(release.facility.name, json.children) === -1) {
+      if(json.children.length === 0 || release.facility.name > json.children[json.children.length - 1].name) {
+        json.children.push({name: release.facility.name, children: []});
+      } else {
+        for(j = 0; j < json.children.length; j++) {
+          if(release.facility.name < json.children[j].name) {
+            json.children.splice(j, 0, {name: release.facility.name, children: []});
+            break;
+          }
+        }
+      }
+    }
+
+    // Insert the release for the facility
+    var idx = idxByName(release.facility.name, json.children);
+    if(idx === -1) {
+      console.log("fuck");
+    }
+    var releases_by_facility = json.children[idx].children;
+    releases_by_facility.push({name: String(release.year), size: releases_by_facility.length});
+  }
+
+  return json
+}
+
+populateTidyTree = function(treeData) {
+
+  var treeJSON = processAsJSON(treeData);
 
   // Calculate total nodes, max label length
    var totalNodes = 0;
@@ -62,6 +109,7 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
    var panSpeed = 200;
    var panBoundary = 20; // Within 20px from edges will pan when dragging.
    // Misc. variables
+   var maxLabelLength = 30;
    var i = 0;
    var duration = 750;
    var root;
@@ -96,7 +144,7 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
    }
 
    // Call visit function to establish maxLabelLength
-   visit(treeData, function(d) {
+   visit(treeJSON, function(d) {
        totalNodes++;
        maxLabelLength = Math.max(d.name.length, maxLabelLength);
 
@@ -390,12 +438,12 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
    var svgGroup = baseSvg.append("g");
 
    // Define the root
-   root = treeData;
+   root = treeJSON;
    root.x0 = viewerHeight / 2;
    root.y0 = 0;
 
    // Layout the tree initially and center on the root node.
    update(root);
    centerNode(root);
-});
+};
 </script>
