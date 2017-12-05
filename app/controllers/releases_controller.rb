@@ -34,11 +34,15 @@ class ReleasesController < ApplicationController
     release_fields = (Hash(params.fetch("releases", {}).permit!)).map do | key, val |
       { "releases.#{key}" => val }
     end.reduce(:merge) || {}
-    release_fields = (Hash(params.fetch("chemicals", {}).permit!)).map do | key, val |
+    chemical_fields = (Hash(params.fetch("chemicals", {}).permit!)).map do | key, val |
       { "chemicals.#{key}" => (val == "true" ? true : (val == "false" ? false : val) ) }
     end.reduce(:merge) || {}
-    @releases = Release.joins(:facility).joins(:chemical).where("facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}").where(facility_fields.merge(release_fields)).all.sample(100)
+    @releases = Release.joins(:facility).joins(:chemical).where("facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}").where(facility_fields.merge(release_fields).merge(chemical_fields)).all.sample(100)
   end
+
+	def new_event
+
+	end
 
   # POST /releases
   # POST /releases.json
