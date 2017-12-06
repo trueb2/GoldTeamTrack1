@@ -57,13 +57,15 @@ class ReleasesController < ApplicationController
     end.reduce(:merge) || {}
 
 
-    fields = facility_fields.merge(release_fields).merge(chemical_fields)
-    field_conditions = fields.map { |k,v| k + " = " + v }.join(" AND ").strip
-    geo_conditions = "WHERE facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}"
-    conditions = geo_conditions
-    conditions += " AND " + field_conditions unless field_conditions.empty?
+    fields = release_fields.merge(chemical_fields)
+    conditions = fields.map { |k,v| k + " = " + v }.join(" AND ").strip
 
-    @releases = ActiveRecord::Base.connection.exec_query("SELECT releases.id AS release_id, chemicals.id AS chemical_id, facilities.id AS facility_id, chemicals.name AS chemical_name, facilities.name AS facility_name, facilities.*, chemicals.*, releases.*, companies.* FROM releases INNER JOIN facilities ON releases.facility_id = facilities.id INNER JOIN chemicals ON releases.chemical_id = chemicals.id INNER JOIN companies ON facilities.company_id = companies.id #{conditions} LIMIT 100")
+    facility_fields_string = facility_fields.map { |k,v| k + " = " + v }.join(" AND ").strip
+    geo_conditions = "WHERE facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}"
+	facilities_query = "SELECT * from facilities #{geo_conditions} #{"AND " + facility_fields_string if !facility_fields_string.empty?} LIMIT 100"
+
+    @releases = ActiveRecord::Base.connection.exec_query("SELECT releases.id AS release_id, chemicals.id AS chemical_id, facilities.id AS facility_id, chemicals.name AS chemical_name, facilities.name AS facility_name, facilities.*, chemicals.*, releases.*, companies.* FROM releases INNER JOIN (#{facilities_query}) as facilities ON releases.facility_id = facilities.id INNER JOIN chemicals ON releases.chemical_id = chemicals.id INNER JOIN companies ON facilities.company_id = companies.id #{"WHERE " + conditions if !conditions.empty?} LIMIT 5000")
+
     # @releases = Release.includes(:facility, :chemical).joins(:facility, :chemical).where("facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}").where(facility_fields.merge(release_fields).merge(chemical_fields)).limit(100)
   end
 
