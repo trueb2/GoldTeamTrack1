@@ -23,14 +23,29 @@
 
   function attachContent(marker, release) {
       var infowindow = new google.maps.InfoWindow({
-        content: formatReleaseEventString(release)
+        content: formatReleaseEventString(release),
+        isOpen: false
       });
 
       marker.addListener('mouseover', function() {
         infowindow.open(marker.get('map'), marker);
+        infowindow.isOpen = false;
       });
       marker.addListener('mouseout', function() {
-        infowindow.close(marker.get('map'), marker);
+        if (!infowindow.isOpen) {
+          infowindow.close(marker.get('map'), marker);
+        }
+
+      });
+      marker.addListener('click', function() {
+        if(infowindow.isOpen == false){
+          infowindow.open(marker.get('map'), marker);
+          infowindow.isOpen = true;
+        }else{
+          infowindow.close(marker.get('map'), marker);
+          infowindow.isOpen = false;
+        }
+
       });
   }
 
