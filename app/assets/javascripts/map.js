@@ -7,25 +7,19 @@
     pins = [];
   }
 
-  function formatReleaseEventString(release) {
+  function formatReleaseEventString(facility) {
     var ret = ""
-    ret += "Facility: " + release.facility.name + "<br>" +
-      "Chemical: " + release.chemical.name + "<br>";
-    if (release.amount)
-      ret += "Amount: " + release.amount + " " + release.units + "<br>";
-    ret += "Year: " + release.year + "<br>";
-    ret += "Location: " + release.facility.address + ", " + release.facility.city +
-       ", " + release.facility.state + "<br>";
-    ret += "[<a href='/facilities/" + release.facility.id + "/edit'>Edit Facility</a>]&nbsp;";
-    ret += "[<a href='/releases/" + release.id + "/edit'>Edit Release</a>]<br>";
-    ret += "[<a data-confirm='Are you sure?' rel='nofollow' data-method='delete' href='/facilities/" + release.facility.id + "'>Delete Facility</a>]&nbsp;";
-    ret += "[<a data-confirm='Are you sure?' rel='nofollow' data-method='delete' href='/releases/" + release.id + "'>Delete Release</a>]";
+    ret += "Facility: " + facility.name + "<br>";
+    ret += "Location: " + facility.address + ", " + facility.city +
+       ", " + facility.state + "<br>";
+    ret += "[<a href='/facilities/" + facility.id + "/edit'>Edit Facility</a>]&nbsp;";
+    ret += "[<a data-confirm='Are you sure?' rel='nofollow' data-method='delete' href='/facilities/" + facility.id + "'>Delete Facility</a>]&nbsp;";
     return ret;
   }
 
-  function attachContent(marker, release) {
+  function attachContent(marker, facility) {
       var infowindow = new google.maps.InfoWindow({
-        content: formatReleaseEventString(release),
+        content: formatReleaseEventString(facility),
         isOpen: false
       });
 
@@ -68,14 +62,25 @@
       },
     }
     getEvents(fields, function(list) {
+      var facilities = {};
       for (i = 0; i < list.length; i++) {
-        var facility = list[i].facility;
+        var f_id = "" + list[i].facility.id;
+        if (!facilities[f_id]) {
+          facilities[f_id] = Object.assign({}, list[i].facility);
+          facilities[f_id].release_count = 0;
+        }
+        facilities[f_id].release_count++;
+      }
+      for (f_id in facilities) {
+        var facility = facilities[f_id];
+        console.log(facility);
         var marker = new google.maps.Marker({
           position: { lat: facility.latitude, lng: facility.longitude },
+          label: "" + facility.release_count,
           map: map
         });
         pins.push(marker);
-        attachContent(marker, list[i]);
+        attachContent(marker, facility);
       }
     });
   }
