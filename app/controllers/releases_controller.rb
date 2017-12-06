@@ -23,20 +23,21 @@ class ReleasesController < ApplicationController
   end
 
   def tree
-    west = params[:w] || -130
-    east = params[:e] || -65
-    south = params[:s] || 22
-    north = params[:n] || 50
-    facility_fields = Hash(params.fetch("facilities", {}).permit!).map do | key, val |
-      { "facilities.#{key}" => val }
-    end.reduce(:merge) || {}
-    release_fields = (Hash(params.fetch("releases", {}).permit!)).map do | key, val |
-      { "releases.#{key}" => val }
-    end.reduce(:merge) || {}
-    chemical_fields = (Hash(params.fetch("chemicals", {}).permit!)).map do | key, val |
-      { "chemicals.#{key}" => (val == "true" ? true : (val == "false" ? false : val) ) }
-    end.reduce(:merge) || {}
-    @releases = ActiveRecord::Base.connection.exec_query("SELECT companies.name AS company_name, facilities.name AS facility_name, releases.year AS release_year FROM companies INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON releases.facility_id = facilities.id LIMIT 500")
+
+    # @top = ActiveRecord::Base.connection.exec_query("SELECT companies.name AS company_name, COUNT(facilities.name) AS num_facilities FROM companies INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON releases.facility_id = facilities.id GROUP BY companies.name ORDER BY num_facilities DESC LIMIT 100")
+    # @releases = ActiveRecord::Base.connection.exec_query("SELECT companies.name AS company_name, facilities.name AS facility_name, releases.year AS release_year FROM (SELECT companies.name AS company_name, COUNT(facilities.name) AS num_facilities FROM companies INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON releases.facility_id = facilities.id GROUP BY companies.name ORDER BY num_facilities DESC LIMIT 100) AS T INNER JOIN companies WHERE companies.name = T.company_name INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON releases.facility_id = facilities.id ")
+    # @releases = ActiveRecord::Base.connection.exec_query("SELECT companies.name AS company_name, facilities.name AS facility_name, releases.year AS release_year FROM companies INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON releases.facility_id = facilities.id LIMIT 100")
+
+    # Get the top 100 companies with the most releases then get 1 release from each company
+    @releases = ActiveRecord::Base.connection.exec_query("SELECT T1.cname AS company_name, T1.fname AS facility_name, releases.year AS release_year FROM (SELECT companies.name AS cname, facilities.name AS fname, MIN(releases.id) AS release_id FROM (SELECT companies.name AS company_name FROM companies INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON releases.facility_id = facilities.id GROUP BY companies.name ORDER BY COUNT(facilities.name) DESC LIMIT 100) AS T INNER JOIN companies ON companies.name = T.company_name INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON facilities.id = releases.facility_id GROUP BY companies.name, facilities.name) AS T1 INNER JOIN releases ON releases.id = T1.release_id LIMIT 100")
+
+  end
+
+  def expand_tree
+    company_name = params[:company_name]
+    return if company_name.nil?
+
+    @releases = ActiveRecord::Base.connection.exec_query("SELECT companies.name AS company_name, facilities.name AS facility_name, releases.year AS release_year FROM companies INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON releases.facility_id = facilities.id WHERE companies.name = '#{company_name}'")
   end
 
   def events
@@ -52,9 +53,18 @@ class ReleasesController < ApplicationController
       { "releases.#{key}" => val }
     end.reduce(:merge) || {}
     chemical_fields = (Hash(params.fetch("chemicals", {}).permit!)).map do | key, val |
-      { "chemicals.#{key}" => (val == "true" ? true : (val == "false" ? false : val) ) }
+      { "chemicals.#{key}" => val }
     end.reduce(:merge) || {}
-    @releases = Release.includes(:facility, :chemical).joins(:facility, :chemical).where("facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}").where(facility_fields.merge(release_fields).merge(chemical_fields)).limit(100)
+
+
+    fields = facility_fields.merge(release_fields).merge(chemical_fields)
+    field_conditions = fields.map { |k,v| k + " = " + v }.join(" AND ").strip
+    geo_conditions = "WHERE facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}"
+    conditions = geo_conditions
+    conditions += " AND " + field_conditions unless field_conditions.empty?
+
+    @releases = ActiveRecord::Base.connection.exec_query("SELECT facilities.*, chemicals.*, releases.*, companies.* FROM releases INNER JOIN facilities ON releases.facility_id = facilities.id INNER JOIN chemicals ON releases.chemical_id = chemicals.id INNER JOIN companies ON facilities.company_id = companies.id #{conditions} LIMIT 100")
+    # @releases = Release.includes(:facility, :chemical).joins(:facility, :chemical).where("facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}").where(facility_fields.merge(release_fields).merge(chemical_fields)).limit(100)
   end
 
 	def new_event
@@ -74,7 +84,7 @@ class ReleasesController < ApplicationController
 		release = Release.create(release_fields.merge({ units: "pounds", chemical: chemical, facility: facility }))
 		puts release.id
 		redirect_to "/?new_event=1"
-	end	
+	end
 
   # POST /releases
   # POST /releases.json

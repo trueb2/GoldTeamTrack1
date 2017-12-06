@@ -120,7 +120,6 @@ function processAsJSON(data) {
 
 populateTidyTree = function(treeData) {
   var treeJSON = processAsJSON(treeData);
-  console.log(treeJSON);
 
   // Calculate total nodes, max label length
    var totalNodes = 0;
@@ -279,9 +278,28 @@ populateTidyTree = function(treeData) {
 
    function click(d) {
        if (d3.event.defaultPrevented) return; // click suppressed
-       d = toggleChildren(d);
-       update(d);
-       centerNode(d);
+       if (d.depth === 1) {
+         console.log("Company node clicked");
+         getCompanyTreeEvents(d.name, function(data) {
+           // insert and update new releases
+           var treeJSON = processAsJSON(data);
+           var company = treeJSON.children[0];
+           for(var i = 0; i < root.children.length; i++) {
+             if(root.children[i].name === d.name) {
+               root.children[i] = company;
+               break;
+             }
+           }
+           update(root)
+           centerNode(root);
+         });
+       } else {
+         console.log("non Company node clicked");
+       }
+
+       // d = toggleChildren(d);
+       // update(d);
+       // centerNode(d);
    }
 
    function update(source) {

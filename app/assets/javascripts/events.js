@@ -33,3 +33,14 @@ function getTreeEvents(query, callback) {
     else callback(JSON.parse(xhr.responseText));
   }
 }
+
+function getCompanyTreeEvents(company_name, callback) {
+  var xhr = new XMLHttpRequest();
+  console.log("Requesting: " + "/expand_tree/" + company_name);
+  xhr.open("GET", "/expand_tree/" + company_name);
+  xhr.send();
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState < 4) return;
+    else callback(JSON.parse(xhr.responseText));
+  }
+}
