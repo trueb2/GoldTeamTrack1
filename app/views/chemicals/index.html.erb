@@ -2,7 +2,9 @@
 
 <h1>Chemicals (<%= @count %>)</h1>
 
-<table>
+<%= will_paginate @chemicals %>
+
+<table class="table-condensed">
   <thead>
     <tr>
       <th>Name</th>

@@ -2,7 +2,14 @@
 
 <h1>Facilities (<%= @count %>)</h1>
 
-<table>
+<form class="form-inline my-2 my-lg-0" _lpchecked="1" action="/facilities" method="get">
+  <input class="form-control mr-sm-2" type="text" placeholder="Name" name="name">
+  <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+<%= will_paginate @facilities %>
+
+<table class="table-condensed"
   <thead>
     <tr>
       <th>Name</th>

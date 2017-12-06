@@ -2,7 +2,16 @@
 
 <h1>Companies (<%= @count %>)</h1>
 
-<table>
+<form class="form-inline my-2 my-lg-0" _lpchecked="1" action="/companies" method="get">
+  <input class="form-control mr-sm-2" type="text" placeholder="Facility Name" name="facility_name">
+  <input class="form-control mr-sm-2" type="text" placeholder="Company Name" name="company_name">
+  <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+
+<%= will_paginate @companies %>
+
+<table class="table-condensed">
   <thead>
     <tr>
       <th>Name</th>

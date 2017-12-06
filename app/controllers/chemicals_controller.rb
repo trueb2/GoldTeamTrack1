@@ -5,7 +5,7 @@ class ChemicalsController < ApplicationController
   # GET /chemicals.json
   def index
     @count = Chemical.count
-    @chemicals = Chemical.all
+    @chemicals = Chemical.all.paginate(page: params[:page], per_page: 1000)
   end
 
   # GET /chemicals/1

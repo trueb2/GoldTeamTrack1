@@ -5,11 +5,7 @@ class FacilitiesController < ApplicationController
   # GET /facilities.json
   def index
     @count = Facility.count
-     if params[:name_like]
-       @facilities = Facility.where("name LIKE ?", "%#{params[:name_like]}%")
-     else
-       @facilities = Facility.all
-     end
+    @facilities = Facility.where("name LIKE ?", "%#{params[:name]}%").paginate(page: params[:page], per_page: 1000)
   end
 
   # GET /facilities/1

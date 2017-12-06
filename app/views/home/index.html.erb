@@ -66,6 +66,31 @@
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADv2Y8CtCt8vg9aFPz1BowUxXLYx6YFTo&callback=initMap"></script>
 
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/dataTables.bootstrap4.min.css" rel="stylesheet"/>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+
+<div style="overflow-y:scroll; max-height:1000px; max-width:80%" class="container-fluid">
+  <table data-toggle="table">
+    <thead>
+      <tr>
+        <th>Chemical</th>
+        <th>Facility</th>
+        <th>Year</th>
+        <th>Quantity</th>
+        <th>Units</th>
+      </tr>
+    </thead>
+
+    <tbody id="tabel_body">
+
+    </tbody>
+
+  </table>
+</div>
+
 <div class="container-fluid">
   <div class="jumbotron">
     <h1 style="margin-bottom: 50px;" >Graph</h1>

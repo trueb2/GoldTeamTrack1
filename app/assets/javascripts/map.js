@@ -62,6 +62,7 @@
       },
     }
     getEvents(fields, function(list) {
+      window.releases = list;
       var facilities = {};
       for (i = 0; i < list.length; i++) {
         var f_id = "" + list[i].facility.id;
@@ -82,7 +83,9 @@
         pins.push(marker);
         attachContent(marker, facility);
       }
+      generateTabel(list);
     });
+
   }
 
   function initMap() {
@@ -97,12 +100,65 @@
     dropPins();
   }
 
+  function generateTabel(list){
+      // get the reference for the body
+    var new_tabel_body = document.createElement("tbody");
+    new_tabel_body.id = "new_table_body";
+
+    // creating all cells
+    for (var i = 0; i < list.length; i++) {
+      //console.log(list[i])
+      // creates a table row
+      var row = document.createElement("tr");
+        // Create a <td> element and a text node, make the text
+        // node the contents of the <td>, and put the <td> at
+        // the end of the table row
+        var cell = document.createElement("td");
+        var cellText = document.createTextNode(list[i].chemical.name);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+
+        var cell = document.createElement("td");
+        var cellText = document.createTextNode(list[i].facility.name);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+
+        var cell = document.createElement("td");
+        var cellText = document.createTextNode(list[i].year);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+
+        var cell = document.createElement("td");
+        var cellText = document.createTextNode(list[i].quantity);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+
+        var cell = document.createElement("td");
+        var cellText = document.createTextNode(list[i].units);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+
+
+      // add the row to the end of the table body
+      new_tabel_body.appendChild(row);
+
+
+    }
+    old_tbody = document.getElementById("tabel_body");
+    old_tbody.parentNode.replaceChild(new_tabel_body,old_tbody);
+    new_tabel_body.id = "tabel_body";
+
+    //$('#tabel').DataTable();
+  }
+
+
   $(document).ready(function() {
     var eventFieldsForm = document.getElementById("event_fields");
     eventFieldsForm.onsubmit = function(e) {
       e.preventDefault();
       dropPins();
     };
+
     getTreeEvents(function(list) {
       // Load the graph below the map if it has been initialized
       if(typeof populateTidyTree !==  'undefined') {
