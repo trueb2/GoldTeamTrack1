@@ -1,0 +1,68 @@
+<style>
+
+input[type=submit] {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+</style>
+
+<div class="container">
+
+<h1>New Release Event</h1>
+
+<%= form_tag(create_event_path, method: "post") do %>
+
+<h3>Release</h3>
+
+<p>Year</p>
+<input type="text" id = "release_year" name="release[year]" />
+
+<p>Quantity<p>
+<input type="text" id = "release_quantity" name="release[quantity]" /> pounds
+
+
+<h3>Chemical</h3>
+
+<p>Name</p>
+<input type="text" id = "chemical_name" name="chemical[name]" />
+
+<p>Clear Air Act?
+<input type="checkbox" id = "chemical_clear_air_act_chemical" name="chemical[clear_air_act_chemical]" />
+
+<h3>Facility</h3>
+
+<p>Name</p>
+<input type="text" id = "facility_name" name="facility[name]">
+
+<p>Address</p>
+<input type="text" id = "facility_address" name="facility[address]">
+
+<p>City</p>
+<input type="text" id = "facility_city" name="facility[city]">
+
+<p>State</p>
+<input type="text" id = "facility_state" name="facility[state]">
+
+<p>Latitude</p>
+<input type="text" id = "facility_latitude" name="facility[latitude]">
+
+<p>Longitude</p>
+<input type="text" id = "facility_longitude" name="facility[longitude]">
+
+<h3>Company</h3>
+
+<p>Name</p>
+<input type="text" id = "company_name" name="company[name]" />
+
+<br>
+
+<input type="submit" value="Add Event" />
+
+<% end %>
+
+</div>

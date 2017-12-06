@@ -61,6 +61,21 @@ class ReleasesController < ApplicationController
 
 	end
 
+	def create_event
+		puts params
+		release_fields = params.fetch("release").permit(:year, :quantity)
+		chemical_fields = params.fetch("chemical").permit(:name, :clear_air_act_chemical)
+		chemical_fields[:clear_air_act_chemical] ||= 0
+		facility_fields = params.fetch("facility").permit(:name, :address, :city, :state, :latitude, :longitude)
+		company_fields = params.fetch("company").permit(:name)
+		company = Company.create(company_fields)
+		facility = Facility.create(facility_fields.merge({ company: company }))
+		chemical = Chemical.create(chemical_fields)
+		release = Release.create(release_fields.merge({ units: "pounds", chemical: chemical, facility: facility }))
+		puts release.id
+		redirect_to "/?new_event=1"
+	end	
+
   # POST /releases
   # POST /releases.json
   def create
