@@ -121,7 +121,7 @@ class ReleasesController < ApplicationController
   def destroy
     @release.destroy
     respond_to do |format|
-      format.html { redirect_to releases_url, notice: 'Release was successfully destroyed.' }
+      format.html { redirect_to "/", notice: 'Release was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -134,6 +134,6 @@ class ReleasesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def release_params
-      params.require(:release).permit(:date, :method, :quantity, :units)
+      params.require(:release).permit(:year, :method, :quantity, :units)
     end
 end
