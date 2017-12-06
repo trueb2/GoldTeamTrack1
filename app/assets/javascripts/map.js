@@ -17,7 +17,9 @@
     ret += "Location: " + release.facility.address + ", " + release.facility.city +
        ", " + release.facility.state + "<br>";
     ret += "[<a href='/facilities/" + release.facility.id + "/edit'>Edit Facility</a>]&nbsp;";
-    ret += "[<a href='/releases/" + release.id + "/edit'>Edit Release</a>]";
+    ret += "[<a href='/releases/" + release.id + "/edit'>Edit Release</a>]<br>";
+    ret += "[<a data-confirm='Are you sure?' rel='nofollow' data-method='delete' href='/facilities/" + release.facility.id + "'>Delete Facility</a>]&nbsp;";
+    ret += "[<a data-confirm='Are you sure?' rel='nofollow' data-method='delete' href='/releases/" + release.id + "'>Delete Release</a>]";
     return ret;
   }
 
