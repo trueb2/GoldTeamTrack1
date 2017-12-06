@@ -16,6 +16,8 @@
     ret += "Year: " + release.year + "<br>";
     ret += "Location: " + release.facility.address + ", " + release.facility.city +
        ", " + release.facility.state + "<br>";
+    ret += "[<a href='/facilities/" + release.facility.id + "/edit'>Edit Facility</a>]&nbsp;";
+    ret += "[<a href='/releases/" + release.id + "/edit'>Edit Release</a>]";
     return ret;
   }
 
@@ -45,12 +47,6 @@
         clear_air_act_chemical: document.getElementById("chemical_caa").checked
       },
     }
-    getTreeEvents(fields, function(list) {
-      // Load the graph below the map if it has been initialized
-      if(typeof populateTidyTree !==  'undefined') {
-        populateTidyTree(list);
-      }
-    });
     getEvents(fields, function(list) {
       for (i = 0; i < list.length; i++) {
         var facility = list[i].facility;
@@ -76,10 +72,16 @@
     dropPins();
   }
 
-$(document).ready(function() {
+  $(document).ready(function() {
     var eventFieldsForm = document.getElementById("event_fields");
     eventFieldsForm.onsubmit = function(e) {
       e.preventDefault();
       dropPins();
-  };
-});
+    };
+    getTreeEvents(function(list) {
+      // Load the graph below the map if it has been initialized
+      if(typeof populateTidyTree !==  'undefined') {
+        populateTidyTree(list);
+      }
+    });
+  });

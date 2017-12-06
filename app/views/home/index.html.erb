@@ -45,6 +45,8 @@
 <div class="container-fluid">
     <div class="jumbotron">
 
+	<h1>Map View</h1>
+
         <br>
 
         <form id="event_fields">
@@ -65,5 +67,8 @@
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADv2Y8CtCt8vg9aFPz1BowUxXLYx6YFTo&callback=initMap"></script>
 
 <div class="container-fluid">
-  <%= render partial: "zoom_tree" %>
+  <div class="jumbotron">
+    <h1 style="margin-bottom: 50px;" >Graph</h1>
+    <%= render partial: "zoom_tree" %>
+  </div>
 </div>
