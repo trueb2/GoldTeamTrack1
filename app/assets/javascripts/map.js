@@ -26,8 +26,11 @@
         content: formatReleaseEventString(release)
       });
 
-      marker.addListener('click', function() {
+      marker.addListener('mouseover', function() {
         infowindow.open(marker.get('map'), marker);
+      });
+      marker.addListener('mouseout', function() {
+        infowindow.close(marker.get('map'), marker);
       });
   }
 
@@ -68,7 +71,7 @@
       center: mapCenter
     });
 
-    google.maps.event.addListener(map, "bounds_changed", dropPins);
+    google.maps.event.addListener(map, "idle", dropPins);
     dropPins();
   }
 
