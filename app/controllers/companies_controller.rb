@@ -5,7 +5,9 @@ class CompaniesController < ApplicationController
   # GET /companies.json
   def index
     @count = Company.count
-    @companies = Company.all.paginate(page: params[:page], per_page: 1000)
+    facility_name = if params[:facility_name].nil? or params[:facility_name].empty? then '%' else params[:facility_name] end
+    company_name = if params[:company_name].nil? or params[:company_name].empty? then '%' else params[:company_name] end
+    @companies = Company.distinct.where("companies.name LIKE '%#{company_name}%'").joins("INNER JOIN facilities ON facilities.company_id = companies.id").where("facilities.name LIKE ?", facility_name).all.paginate(page: params[:page], per_page: 1000)
   end
 
   # GET /companies/1

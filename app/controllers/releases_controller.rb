@@ -5,7 +5,8 @@ class ReleasesController < ApplicationController
   # GET /releases.json
   def index
     @count = Release.count
-    @releases = Release.all.paginate(page: params[:page], per_page: 1000)
+    facility_name = params[:facility_name] || '%'    
+    @releases = Release.joins(:facility).where("facilities.name LIKE ? ", facility_name).paginate(page: params[:page], per_page: 1000)
   end
 
   # GET /releases/1
