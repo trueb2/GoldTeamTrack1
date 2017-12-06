@@ -5,7 +5,7 @@ class ReleasesController < ApplicationController
   # GET /releases.json
   def index
     @count = Release.count
-    facility_name = params[:facility_name] || '%'    
+    facility_name = params[:facility_name] || '%'
     @releases = Release.joins(:facility).where("facilities.name LIKE ? ", facility_name).paginate(page: params[:page], per_page: 1000)
   end
 
@@ -63,7 +63,7 @@ class ReleasesController < ApplicationController
 
     facility_fields_string = facility_fields.map { |k,v| k + " = " + v }.join(" AND ").strip
     geo_conditions = "WHERE facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}"
-    facilities_query = "SELECT facilities.* from facilities INNER JOIN releases ON releases.facility_id = facilities.id INNER JOIN chemicals ON releases.chemical_id = chemicals.id #{geo_conditions} #{"AND " + facility_fields_string if !facility_fields_string.empty?} #{"AND " + conditions if !conditions.empty?} LIMIT 100"
+    facilities_query = "SELECT * from facilities #{geo_conditions} #{"AND " + facility_fields_string if !facility_fields_string.empty?} LIMIT 100"
 
     @releases = ActiveRecord::Base.connection.exec_query("SELECT releases.id AS release_id, chemicals.id AS chemical_id, facilities.id AS facility_id, chemicals.name AS chemical_name, facilities.name AS facility_name, facilities.*, chemicals.*, releases.*, companies.* FROM releases INNER JOIN (#{facilities_query}) as facilities ON releases.facility_id = facilities.id INNER JOIN chemicals ON releases.chemical_id = chemicals.id INNER JOIN companies ON facilities.company_id = companies.id #{"WHERE " + conditions if !conditions.empty?} LIMIT 5000")
 
