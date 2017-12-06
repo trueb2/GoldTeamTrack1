@@ -23,10 +23,10 @@ function getEvents(query, callback) {
   }
 }
 
-function getTreeEvents(query, callback) {
+function getTreeEvents(callback) {
   var xhr = new XMLHttpRequest();
-  console.log("Requesting: " + "/tree.json?" + queryString(query));
-  xhr.open("GET", "/tree.json?" + queryString(query));
+  console.log("Requesting: " + "/tree.json");
+  xhr.open("GET", "/tree.json");
   xhr.send();
   xhr.onreadystatechange = function() {
     if (xhr.readyState < 4) return;

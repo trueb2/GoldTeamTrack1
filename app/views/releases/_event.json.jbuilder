@@ -3,6 +3,7 @@ json.set! :year, release["year"]
 json.set! :quantity, release["quantity"]
 json.set! :units, release["units"]
 json.set! :facility do
+  json.set! :id, release["id"]
   json.set! :name, release["name"]
   json.set! :address, release["address"]
   json.set! :city, release["city"]
