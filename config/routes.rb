@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/new_event', to: 'releases#new_event'
   post '/create_event', to: 'releases#create_event'
   get '/tree', to: 'releases#tree'
+  get '/expand_tree/:company_name', to: 'releases#expand_tree'
 
   resources :chemicals
   resources :releases
