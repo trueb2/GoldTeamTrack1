@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  
+
   get '/events', to: 'releases#events'
+  get '/tree', to: 'releases#tree'
 
   resources :chemicals
   resources :releases

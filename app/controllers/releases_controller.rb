@@ -22,6 +22,23 @@ class ReleasesController < ApplicationController
   def edit
   end
 
+  def tree
+    west = params[:w] || -130
+    east = params[:e] || -65
+    south = params[:s] || 22
+    north = params[:n] || 50
+    facility_fields = Hash(params.fetch("facilities", {}).permit!).map do | key, val |
+      { "facilities.#{key}" => val }
+    end.reduce(:merge) || {}
+    release_fields = (Hash(params.fetch("releases", {}).permit!)).map do | key, val |
+      { "releases.#{key}" => val }
+    end.reduce(:merge) || {}
+    chemical_fields = (Hash(params.fetch("chemicals", {}).permit!)).map do | key, val |
+      { "chemicals.#{key}" => (val == "true" ? true : (val == "false" ? false : val) ) }
+    end.reduce(:merge) || {}
+    @releases = ActiveRecord::Base.connection.exec_query("SELECT companies.name AS company_name, facilities.name AS facility_name, releases.year AS release_year FROM companies INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON releases.facility_id = facilities.id LIMIT 500")
+  end
+
   def events
     puts params
     west = params[:w] || -130

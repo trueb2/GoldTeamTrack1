@@ -63,42 +63,64 @@ function idxByName(name, arr) {
 
 function processAsJSON(data) {
   json = {name: "Company", children: []};
+
+  // Insert each release into the tree json
   for(var i = 0; i < data.length; i++) {
+    // get the release {company_name, facility_name, release_year}
     var release = data[i];
 
-    if(typeof release.year === 'undefined' || typeof release.facility.name === 'undefined') {
-      console.log(release);
+    // Create the company if necessary
+    if(idxByName(release.company_name, json.children) === -1) {
+      if(json.children.length === 0 || release.company_name < json.children[0]) {
+        // Insert before
+        json.children.push({name: release.company_name, children: []});
+      } else if (json.children[json.children.length - 1].name < release.company_name) {
+        // Insert after
+        json.children.push({name: release.company_name, children: []});
+      } else {
+        // Insert in between
+        for(var j = 0; j < json.children.length; j++) {
+          if(release.company_name < json.children[j]) {
+            json.children.push({name: release.company_name, children: []});
+          }
+        }
+      }
     }
 
-    // Create the facility if it does not exist
-    if(idxByName(release.facility.name, json.children) === -1) {
-      if(json.children.length === 0 || release.facility.name > json.children[json.children.length - 1].name) {
-        json.children.push({name: release.facility.name, children: []});
+    // Insert the facility if necessary for the company
+    var company_idx = idxByName(release.company_name, json.children);
+    var company = json.children[company_idx];
+
+    // Create the facility if necessary
+    if(idxByName(release.facility_name, company.children) === -1) {
+      if(company.children.length === 0 || release.facility_name < company.children[0]) {
+        // Insert before
+        company.children.push({name: release.facility_name, children: []});
+      } else if (company.children[company.children.length - 1].name < release.facility_name) {
+        // Insert after
+        company.children.push({name: release.facility_name, children: []});
       } else {
-        for(j = 0; j < json.children.length; j++) {
-          if(release.facility.name < json.children[j].name) {
-            json.children.splice(j, 0, {name: release.facility.name, children: []});
-            break;
+        // Insert in between
+        for(var j = 0; j < company.children.length; j++) {
+          if(release.facility_name < company.children[j]) {
+            company.children.push({name: release.facility_name, children: []});
           }
         }
       }
     }
 
     // Insert the release for the facility
-    var idx = idxByName(release.facility.name, json.children);
-    if(idx === -1) {
-      console.log("fuck");
-    }
-    var releases_by_facility = json.children[idx].children;
-    releases_by_facility.push({name: String(release.year), size: releases_by_facility.length});
+    var facility_id = idxByName(release.facility_name, company.children);
+    var facility = company.children[facility_id];
+    facility.children.push({name: String(release.release_year), size: facility.children.length});
   }
 
   return json
 }
 
 populateTidyTree = function(treeData) {
-
   var treeJSON = processAsJSON(treeData);
+  console.log(treeJSON);
 
   // Calculate total nodes, max label length
    var totalNodes = 0;

@@ -45,12 +45,13 @@
         clear_air_act_chemical: document.getElementById("chemical_caa").checked
       },
     }
-    getEvents(fields, function(list) {
+    getTreeEvents(fields, function(list) {
       // Load the graph below the map if it has been initialized
       if(typeof populateTidyTree !==  'undefined') {
         populateTidyTree(list);
       }
-
+    });
+    getEvents(fields, function(list) {
       for (i = 0; i < list.length; i++) {
         var facility = list[i].facility;
         var marker = new google.maps.Marker({
