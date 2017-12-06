@@ -279,7 +279,6 @@ populateTidyTree = function(treeData) {
    function click(d) {
        if (d3.event.defaultPrevented) return; // click suppressed
        if (d.depth === 1) {
-         console.log("Company node clicked");
          getCompanyTreeEvents(d.name, function(data) {
            // insert and update new releases
            var treeJSON = processAsJSON(data);
@@ -293,13 +292,7 @@ populateTidyTree = function(treeData) {
            update(root)
            centerNode(d);
          });
-       } else {
-         console.log("non Company node clicked");
-       }
-
-       // d = toggleChildren(d);
-       // update(d);
-       // centerNode(d);
+       } 
    }
 
    function update(source) {
