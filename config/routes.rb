@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   
   get '/events', to: 'releases#events'
+  get '/new_event', to: 'releases#new_event'
+  post '/create_event', to: 'releases#create_event'
 
   resources :chemicals
   resources :releases
