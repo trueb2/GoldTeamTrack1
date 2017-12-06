@@ -29,7 +29,7 @@ class ReleasesController < ApplicationController
     # @releases = ActiveRecord::Base.connection.exec_query("SELECT companies.name AS company_name, facilities.name AS facility_name, releases.year AS release_year FROM companies INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON releases.facility_id = facilities.id LIMIT 100")
 
     # Get the top 100 companies with the most releases then get 1 release from each company
-    @releases = ActiveRecord::Base.connection.exec_query("SELECT T1.cname AS company_name, T1.fname AS facility_name, releases.year AS release_year FROM (SELECT companies.name AS cname, facilities.name AS fname, MIN(releases.id) AS release_id FROM (SELECT companies.name AS company_name FROM companies INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON releases.facility_id = facilities.id GROUP BY companies.name ORDER BY COUNT(facilities.name) DESC LIMIT 100) AS T INNER JOIN companies ON companies.name = T.company_name INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON facilities.id = releases.facility_id GROUP BY companies.name, facilities.name) AS T1 INNER JOIN releases ON releases.id = T1.release_id LIMIT 100")
+    @releases = ActiveRecord::Base.connection.exec_query("SELECT T1.cname AS company_name, T1.fname AS facility_name, releases.year AS release_year FROM (SELECT companies.name AS cname, facilities.name AS fname, MIN(releases.id) AS release_id FROM (SELECT companies.name AS company_name FROM companies INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON releases.facility_id = facilities.id GROUP BY companies.name ORDER BY COUNT(facilities.name) DESC LIMIT 100) AS T INNER JOIN companies ON companies.name = T.company_name INNER JOIN facilities ON facilities.company_id = companies.id INNER JOIN releases ON facilities.id = releases.facility_id GROUP BY companies.name, facilities.name) AS T1 INNER JOIN releases ON releases.id = T1.release_id WHERE year = 2016 LIMIT 100")
 
   end
 
@@ -57,13 +57,15 @@ class ReleasesController < ApplicationController
     end.reduce(:merge) || {}
 
 
-    fields = facility_fields.merge(release_fields).merge(chemical_fields)
-    field_conditions = fields.map { |k,v| k + " = " + v }.join(" AND ").strip
-    geo_conditions = "WHERE facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}"
-    conditions = geo_conditions
-    conditions += " AND " + field_conditions unless field_conditions.empty?
+    fields = release_fields.merge(chemical_fields)
+    conditions = fields.map { |k,v| k + " = " + v }.join(" AND ").strip
 
-    @releases = ActiveRecord::Base.connection.exec_query("SELECT releases.id AS release_id, chemicals.id AS chemical_id, facilities.id AS facility_id, chemicals.name AS chemical_name, facilities.name AS facility_name, facilities.*, chemicals.*, releases.*, companies.* FROM releases INNER JOIN facilities ON releases.facility_id = facilities.id INNER JOIN chemicals ON releases.chemical_id = chemicals.id INNER JOIN companies ON facilities.company_id = companies.id #{conditions} LIMIT 100")
+    facility_fields_string = facility_fields.map { |k,v| k + " = " + v }.join(" AND ").strip
+    geo_conditions = "WHERE facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}"
+	facilities_query = "SELECT * from facilities #{geo_conditions} #{"AND " + facility_fields_string if !facility_fields_string.empty?} LIMIT 100"
+
+    @releases = ActiveRecord::Base.connection.exec_query("SELECT releases.id AS release_id, chemicals.id AS chemical_id, facilities.id AS facility_id, chemicals.name AS chemical_name, facilities.name AS facility_name, facilities.*, chemicals.*, releases.*, companies.* FROM releases INNER JOIN (#{facilities_query}) as facilities ON releases.facility_id = facilities.id INNER JOIN chemicals ON releases.chemical_id = chemicals.id INNER JOIN companies ON facilities.company_id = companies.id #{"WHERE " + conditions if !conditions.empty?} LIMIT 5000")
+
     # @releases = Release.includes(:facility, :chemical).joins(:facility, :chemical).where("facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}").where(facility_fields.merge(release_fields).merge(chemical_fields)).limit(100)
   end
 
@@ -121,7 +123,7 @@ class ReleasesController < ApplicationController
   def destroy
     @release.destroy
     respond_to do |format|
-      format.html { redirect_to releases_url, notice: 'Release was successfully destroyed.' }
+      format.html { redirect_to "/", notice: 'Release was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -134,6 +136,6 @@ class ReleasesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def release_params
-      params.require(:release).permit(:date, :method, :quantity, :units)
+      params.require(:release).permit(:year, :method, :quantity, :units)
     end
 end

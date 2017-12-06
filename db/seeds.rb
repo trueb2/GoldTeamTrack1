@@ -27,6 +27,15 @@ open('basic_data_files.csv') do |csv|
 
     company_name = r[lookup["PARENT_COMPANY_NAME"]]
     if !company_name.empty?
+        numerical_company_name = true
+        begin
+            try_to_cast_company_name_to_number = Integer(company_name)
+	rescue
+            numerical_company_name = false
+        end
+        if numerical_company_name
+            next
+        end
         company = Company.find_or_create_by!(name: company_name)
     else
 	next
