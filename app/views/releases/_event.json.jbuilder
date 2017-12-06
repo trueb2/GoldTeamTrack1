@@ -1,10 +1,10 @@
-json.set! :id, release["id"]
+json.set! :id, release["release_id"]
 json.set! :year, release["year"]
 json.set! :quantity, release["quantity"]
 json.set! :units, release["units"]
 json.set! :facility do
-  json.set! :id, release["id"]
-  json.set! :name, release["name"]
+  json.set! :id, release["facility_id"]
+  json.set! :name, release["facility_name"]
   json.set! :address, release["address"]
   json.set! :city, release["city"]
   json.set! :state, release["state"]
@@ -15,7 +15,8 @@ json.set! :facility do
   json.set! :company, release["company_name"]
 end
 json.set! :chemical do
-  json.set! :name, release["name"]
+  json.set! :id, release["chemical_id"]
+  json.set! :name, release["chemical_name"]
   json.set! :clear_air_act_chemical, release["clear_air_act_chemical"]
   json.set! :is_metal, release["is_metal"]
 end

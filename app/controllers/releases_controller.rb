@@ -63,7 +63,7 @@ class ReleasesController < ApplicationController
     conditions = geo_conditions
     conditions += " AND " + field_conditions unless field_conditions.empty?
 
-    @releases = ActiveRecord::Base.connection.exec_query("SELECT facilities.*, chemicals.*, releases.*, companies.* FROM releases INNER JOIN facilities ON releases.facility_id = facilities.id INNER JOIN chemicals ON releases.chemical_id = chemicals.id INNER JOIN companies ON facilities.company_id = companies.id #{conditions} LIMIT 100")
+    @releases = ActiveRecord::Base.connection.exec_query("SELECT releases.id AS release_id, chemicals.id AS chemical_id, facilities.id AS facility_id, chemicals.name AS chemical_name, facilities.name AS facility_name, facilities.*, chemicals.*, releases.*, companies.* FROM releases INNER JOIN facilities ON releases.facility_id = facilities.id INNER JOIN chemicals ON releases.chemical_id = chemicals.id INNER JOIN companies ON facilities.company_id = companies.id #{conditions} LIMIT 100")
     # @releases = Release.includes(:facility, :chemical).joins(:facility, :chemical).where("facilities.latitude > #{south} and facilities.latitude < #{north} and facilities.longitude > #{west} and facilities.longitude < #{east}").where(facility_fields.merge(release_fields).merge(chemical_fields)).limit(100)
   end
 
